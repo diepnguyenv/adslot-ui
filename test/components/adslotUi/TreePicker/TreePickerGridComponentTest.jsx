@@ -36,10 +36,10 @@ describe('TreePickerGridComponent', () => {
 
     const groupElement = gridElement.find('.treepickergrid-component-group');
     expect(groupElement).to.have.length(1);
-    expect(groupElement.children()).to.have.length(2); // Two nodes
+    expect(groupElement.children()).to.have.length(3); // Group label and two nodes
 
     _.forEach(props.nodes, (node, index) => {
-      const nodeElement = groupElement.childAt(index);
+      const nodeElement = groupElement.childAt(index + 1); // since index = 0 is the group label
       expect(nodeElement.prop('expandNode')).to.equal(props.expandNode);
       expect(nodeElement.prop('includeNode')).to.equal(props.includeNode);
       expect(nodeElement.prop('removeNode')).to.equal(props.removeNode);
@@ -92,6 +92,29 @@ describe('TreePickerGridComponent', () => {
     expect(emptyElement.prop('collection')).to.equal(props.nodes);
     expect(emptyElement.prop('svgSymbol')).to.equal(props.emptySvgSymbol);
     expect(emptyElement.prop('text')).to.equal(props.emptyText);
+  });
+
+  it('should render with group when there is only 1 group', () => {
+    const props = {
+      emptySvgSymbol: svgSymbol,
+      emptyText: 'Empty!',
+      expandNode: _.noop,
+      groupFormatter: (node) => node.id,
+      includeNode: _.noop,
+      itemType,
+      nodes: [qldNode],
+      nodeRenderer,
+      removeNode: _.noop,
+      selected: false,
+      valueFormatter,
+    };
+    const component = shallow(<TreePickerGrid {...props} />);
+    const gridElement = component.find(Grid);
+    expect(gridElement).to.have.length(1);
+    expect(gridElement.children()).to.have.length(2);
+
+    const groupElements = gridElement.find('.treepickergrid-component-group');
+    expect(groupElements).to.have.length(1);
   });
 
   it('should not display empty with an undefined nodes list', () => {

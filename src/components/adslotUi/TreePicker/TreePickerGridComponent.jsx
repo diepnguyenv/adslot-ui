@@ -32,7 +32,7 @@ const TreePickerGridComponent = ({
     <Grid>
       {_.map(nodesByGroupLabel, (groupedNodes, label) =>
         <div className="treepickergrid-component-group" key={_.kebabCase(label)}>
-          {_.size(nodesByGroupLabel) > 1 ?
+          {_.size(nodesByGroupLabel) >= 1 ?
             <div className="treepickergrid-component-group-label">
               <GridRow dts={`group-label-${_.kebabCase(label)}`}>
                 {label}
